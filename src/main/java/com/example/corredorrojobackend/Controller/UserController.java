@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -70,11 +71,41 @@ public class UserController {
         }
     }
 
-    // Build Get Employee REST API
+    // Endpoint para tener un usuario por su ID
     @GetMapping("{id}")
     public  ResponseEntity<UserDto> getUserById(@PathVariable("id") Long userId) {
         UserDto userDto = userService.getUserById(userId);
 
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
+
+    // Endpoint para crear un usuario
+    @PostMapping
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+        UserDto savedUser = userService.createUser(userDto);
+
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    }
+
+    // Endpoint para obtener todos los usuarios
+    @GetMapping
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<UserDto> users = userService.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+    // Endpoint para actualizar un usuario
+    @PutMapping("{id}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long userId, @RequestBody UserDto updatedUser) {
+        UserDto userDto = userService.updateUser(userId, updatedUser);
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
+    }
+
+    // Endpoint para eliminar un usuario
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable("id") Long userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.ok("Employee deleted successfully.");
+    }
+
+
 }
